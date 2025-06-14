@@ -1,19 +1,30 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Repeat2 } from "lucide-react";
+import { Button } from "@radix-ui/themes";
+import { ArrowDownUp } from "lucide-react";
+import { useAppToast } from '@/hooks/useAppToast';
 
-const SwapButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <div className="flex justify-center">
+interface SwapButtonProps {
+  onClick: () => void;
+}
+
+const SwapButton: React.FC<SwapButtonProps> = ({ onClick }) => {
+  const toast = useAppToast();
+
+  const handleClick = () => {
+    onClick();
+    toast.info('Tokens swapped successfully!');
+  };
+
+  return (
     <Button
-      type="button"
-      onClick={onClick}
       variant="ghost"
-      size="icon"
-      className="w-12 h-12 rounded-full hover:bg-blue-100 hover:cursor-pointer"
+      color="gray"
+      onClick={handleClick}
+      className="mx-auto my-2"
     >
-      <Repeat2 className="text-2xl text-blue-500 rotate-90" />
+      <ArrowDownUp className="h-4 w-4" />
     </Button>
-  </div>
-);
+  );
+};
 
 export default SwapButton;

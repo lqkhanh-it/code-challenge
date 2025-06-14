@@ -1,21 +1,14 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import React from 'react';
+import { Text } from "@radix-ui/themes";
 
 interface ErrorMessageProps {
-  error: string | null;
+  message: string;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
-  if (!error) return null;
-
-  return (
-    <Alert variant="destructive" className="mt-4">
-      <AlertCircle className="h-4 w-4" />
-      <AlertDescription className="ml-2">
-        {error}
-      </AlertDescription>
-    </Alert>
-  );
-};
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => (
+  <Text color="red" size="1" className="mt-1">
+    {message}
+  </Text>
+);
 
 export default ErrorMessage;

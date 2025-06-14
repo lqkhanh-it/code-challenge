@@ -1,102 +1,35 @@
-import type { Token } from '@/types/token';
 import React from 'react';
-import { config } from '@/config/env';
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Select, Text } from "@radix-ui/themes";
 
 interface TokenSelectProps {
-  tokens: Token[];
-  value: string;
-  onChange: (value: string) => void;
   label: string;
+  options: { value: string; label: string }[];
+  error?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
-const TokenSelect: React.FC<TokenSelectProps> = ({ tokens, value, onChange, label }) => {
-  const [open, setOpen] = React.useState(false);
-
-  const getTokenIcon = (currency: string) => {
-    return `${config.tokenIconsBaseUrl}/${currency}.svg`;
-  };
-
-  const selectedToken = tokens.find(token => token.currency === value);
-
+const TokenSelect: React.FC<TokenSelectProps> = ({ label, options, error, value, onChange }) => {
   return (
-    <div className="w-[240px]">
-      <label className="block text-sm font-bold text-blue-700 mb-2">{label}</label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-[240px] h-14 text-lg justify-between"
-          >
-            {selectedToken ? (
-              <div className="flex items-center gap-3 min-w-0">
-                <img
-                  src={getTokenIcon(selectedToken.currency)}
-                  alt={selectedToken.currency}
-                  className="w-6 h-6 rounded-full"
-                />
-                <span className="truncate overflow-hidden text-ellipsis block">{selectedToken.currency}</span>
-              </div>
-            ) : (
-              <span>Select currency</span>
-            )}
-            <ChevronsUpDown className="ml-2 h-5 w-5 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[calc(100vw-2rem)] sm:w-[320px] p-0">
-          <Command>
-            <CommandInput placeholder="Search currency..." className="h-12 text-lg" />
-            <CommandList>
-              <CommandEmpty>No currencies found.</CommandEmpty>
-              <CommandGroup>
-                {tokens.map((token) => (
-                  <CommandItem
-                    key={token.currency}
-                    value={token.currency}
-                    onSelect={() => {
-                      onChange(token.currency);
-                      setOpen(false);
-                    }}
-                    className="h-12 text-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={getTokenIcon(token.currency)}
-                        alt={token.currency}
-                        className="w-6 h-6 rounded-full"
-                      />
-                      <span>{token.currency}</span>
-                    </div>
-                    <Check
-                      className={cn(
-                        "ml-auto h-5 w-5",
-                        value === token.currency ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
+    <div className="space-y-2">
+      <Text as="label" size="2" weight="medium">
+        {label}
+      </Text>
+      <Select.Root value={value} onValueChange={onChange}>
+        <Select.Trigger className="w-full" />
+        <Select.Content>
+          {options.map((option) => (
+            <Select.Item key={option.value} value={option.value}>
+              {option.label}
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Root>
+      {error && (
+        <Text color="red" size="1">
+          {error}
+        </Text>
+      )}
     </div>
   );
 };

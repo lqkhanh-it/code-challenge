@@ -13,6 +13,8 @@ import { useAppToast } from '@/hooks/useAppToast';
 
 interface FormData {
   fromAmount: string;
+  fromCurrency: string;
+  toCurrency: string;
 }
 
 const CurrencySwapForm = () => {
@@ -23,16 +25,20 @@ const CurrencySwapForm = () => {
     toAmount,
     isLoading,
     error,
-    setFromCurrency,
-    setToCurrency,
     setToAmount,
     setLoading,
     setError,
     swapCurrencies,
+    setFromCurrency,
+    setToCurrency,
   } = useSwapStore();
 
-  const { handleSubmit, watch, setValue } = useForm<FormData>({
-    defaultValues: { fromAmount: '' },
+  const { handleSubmit, watch } = useForm<FormData>({
+    defaultValues: { 
+      fromAmount: '',
+      fromCurrency: '',
+      toCurrency: ''
+    },
   });
 
   const toast = useAppToast();
@@ -108,24 +114,18 @@ const CurrencySwapForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-1 w-full max-w-4xl mx-auto p-4 sm:p-8">
-      {/* FROM */}
       <div className="flex flex-col sm:flex-row items-end gap-4">
         <TokenSelect
-          tokens={tokens}
-          value={fromCurrency}
-          onChange={(val) => setFromCurrency(val)}
           label="FROM"
+          options={tokens.map(token => ({ value: token.currency, label: token.currency }))}
+          error={error || undefined}
+          value={fromCurrency}
+          onChange={setFromCurrency}
         />
         <AmountInput
-          value={watchedAmount}
-          onChange={(val) => {
-            setValue('fromAmount', val);
-            if (!val) {
-              setToAmount('');
-            }
-          }}
+          name="fromAmount"
+          label="Amount"
           placeholder="0.00"
-          readOnly={false}
         />
       </div>
 
@@ -144,26 +144,23 @@ const CurrencySwapForm = () => {
         </div>
       </div>
 
-      {/* TO */}
       <div className="flex flex-col sm:flex-row items-end gap-4">
         <TokenSelect
-          tokens={tokens}
-          value={toCurrency}
-          onChange={(val) => setToCurrency(val)}
           label="TO"
+          options={tokens.map(token => ({ value: token.currency, label: token.currency }))}
+          error={error || undefined}
+          value={toCurrency}
+          onChange={setToCurrency}
         />
         <AmountInput
-          value={toAmount}
-          onChange={() => { }}
+          name="toAmount"
+          label="Amount"
           placeholder="0.00"
-          readOnly={true}
         />
       </div>
 
-      {/* Error Message */}
-      <ErrorMessage error={error} />
+      <ErrorMessage message={error || ''} />
 
-      {/* Submit Button */}
       <SubmitButton
         disabled={isLoading || !fromCurrency || !toCurrency || !watchedAmount}
         isLoading={isLoading}

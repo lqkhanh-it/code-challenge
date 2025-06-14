@@ -1,31 +1,40 @@
 import React from 'react';
-import type { ChangeEvent } from 'react';
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { TextField, Text } from "@radix-ui/themes";
+import { useFormContext } from 'react-hook-form';
 
 interface AmountInputProps {
-  value: string;
-  onChange: (value: string) => void;
+  name: string;
+  label: string;
   placeholder?: string;
-  readOnly?: boolean;
+  error?: string;
 }
 
-const AmountInput: React.FC<AmountInputProps> = ({ value, onChange, placeholder, readOnly }) => (
-  <div className="w-full">
-    <label className="block text-sm font-bold text-blue-700 mb-2">AMOUNT</label>
-    <Input
-      type="number"
-      step="any"
-      value={value}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
-      className={cn(
-        "w-full h-14 text-lg [&::-webkit-inner-spin-button]:appearance-none",
-        readOnly && "bg-muted cursor-not-allowed dark:bg-gray-700"
+const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, error }) => {
+  const { register } = useFormContext();
+
+  return (
+    <div className="space-y-2">
+      <Text as="label" size="2" weight="medium">
+        {label}
+      </Text>
+      <TextField.Root>
+        <TextField.Slot>
+          <input
+            {...register(name)}
+            placeholder={placeholder}
+            type="number"
+            step="any"
+            className="w-full"
+          />
+        </TextField.Slot>
+      </TextField.Root>
+      {error && (
+        <Text color="red" size="1">
+          {error}
+        </Text>
       )}
-      placeholder={placeholder}
-      readOnly={readOnly}
-    />
-  </div>
-);
+    </div>
+  );
+};
 
 export default AmountInput;

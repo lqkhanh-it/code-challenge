@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const SwapTokenPage = () => {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="currency-swap-theme">
+    <ThemeProvider defaultTheme="dark">
       <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header */}
         <div className="mt-10 w-full flex flex-col items-center">
