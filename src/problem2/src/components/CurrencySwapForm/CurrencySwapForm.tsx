@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSwapStore } from '@store/useSwapStore';
-import { useFetchPrices } from '@hooks/useFetchPrices';
-import { convertCurrency } from '@utils/convert';
-import { currencyApi } from '@services/currencyApi';
-import TokenSelect from '@components/TokenSelect/TokenSelect';
-import AmountInput from '@components/AmountInput/AmountInput';
-import SwapButton from '@components/SwapButton/SwapButton';
-import ErrorMessage from '@components/ErrorMessage/ErrorMessage';
-import SubmitButton from '@components/SubmitButton/SubmitButton';
-import { useAppToast } from '@hooks/useAppToast';
+import { useSwapStore } from '@/store/useSwapStore';
+import { useFetchPrices } from '@/hooks/useFetchPrices';
+import { convertCurrency } from '@/utils/convert';
+import { currencyApi } from '@/services/currencyApi';
+import TokenSelect from '@/components/TokenSelect/TokenSelect';
+import AmountInput from '@/components/AmountInput/AmountInput';
+import SwapButton from '@/components/SwapButton/SwapButton';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import SubmitButton from '@/components/SubmitButton/SubmitButton';
+import { useAppToast } from '@/hooks/useAppToast';
 
 interface FormData {
   fromAmount: string;
@@ -81,12 +81,15 @@ const CurrencySwapForm = () => {
     setError(null);
 
     try {
-      await currencyApi.executeSwap({
+      const response = await currencyApi.executeSwap({
         fromCurrency,
         toCurrency,
         amount: parseFloat(data.fromAmount),
       });
-      toast.success(`Successfully swapped ${data.fromAmount} ${fromCurrency} to ${toAmount} ${toCurrency}`);
+
+      toast.success(
+        `Successfully swapped ${response.fromAmount} ${fromCurrency} to ${response.toAmount.toFixed(6)} ${toCurrency}\nTransaction ID: ${response.transactionId}`
+      );
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to execute swap';
       setError(errorMessage);
@@ -105,16 +108,6 @@ const CurrencySwapForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-1 w-full max-w-4xl mx-auto p-4 sm:p-8">
-      {/* Rate Display */}
-      {rate && (
-        <div className="mb-6 p-4 pt-0 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Exchange Rate</div>
-          <div className="text-lg font-semibold">
-            1 {fromCurrency} = {rate} {toCurrency}
-          </div>
-        </div>
-      )}
-
       {/* FROM */}
       <div className="flex flex-col sm:flex-row items-end gap-4">
         <TokenSelect
@@ -136,9 +129,19 @@ const CurrencySwapForm = () => {
         />
       </div>
 
-      {/* Swap Button */}
-      <div className="py-4">
-        <SwapButton onClick={handleSwapCurrencies} />
+      {/* Exchange Rate & Swap Button Row */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
+        <div className="flex items-center min-h-[44px] bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-2 text-sm text-gray-600 dark:text-gray-400 font-medium shadow-sm flex-1">
+          {rate ? (
+            <>
+              <span className="mr-2 text-gray-500">Exchange Rate:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">1 {fromCurrency} = {rate} {toCurrency}</span>
+            </>
+          ) : null}
+        </div>
+        <div className="w-14 flex justify-center sm:justify-end">
+          <SwapButton onClick={handleSwapCurrencies} />
+        </div>
       </div>
 
       {/* TO */}

@@ -1,6 +1,14 @@
 import type { Token } from '../types/token';
 import { axiosInstance } from './axios';
 
+interface SwapResponse {
+  success: boolean;
+  transactionId: string;
+  timestamp: string;
+  fromAmount: number;
+  toAmount: number;
+}
+
 export const currencyApi = {
   // Get token prices
   getPrices: async (): Promise<Token[]> => {
@@ -13,14 +21,8 @@ export const currencyApi = {
     fromCurrency: string;
     toCurrency: string;
     amount: number;
-  }): Promise<{ success: boolean; transactionId: string }> => {
-
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return { success: true, transactionId: '123' };
-    const { data } = await axiosInstance.post<{ success: boolean; transactionId: string }>(
-      '/swap',
-      params
-    );
+  }): Promise<SwapResponse> => {
+    const { data } = await axiosInstance.post<SwapResponse>('/swap', params);
     return data;
   },
 }; 

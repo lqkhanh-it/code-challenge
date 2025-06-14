@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
-import SwapTokenPage from '@pages/SwapTokenPage';
+import SwapTokenPage from '@/pages/SwapTokenPage';
+import './mocks/api'; // Import mock adapter
 
 function App() {
   return (

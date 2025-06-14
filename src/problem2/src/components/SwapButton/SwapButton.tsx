@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Repeat2 } from "lucide-react";
 
 const SwapButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <div className="flex justify-center">
@@ -10,7 +11,7 @@ const SwapButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
       size="icon"
       className="w-12 h-12 rounded-full hover:bg-blue-100 hover:cursor-pointer"
     >
-      <span className="text-2xl text-blue-500">⇄</span>
+      <Repeat2 className="text-2xl text-blue-500 rotate-90" />
     </Button>
   </div>
 );

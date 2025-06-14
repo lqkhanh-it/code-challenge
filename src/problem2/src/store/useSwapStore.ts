@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SwapState, Token } from '@types/token';
+import type { SwapState, Token } from '@/types/token';
 
 export const useSwapStore = create<SwapState>((set) => ({
   tokens: [],

@@ -1,6 +1,6 @@
-import type { Token } from '@types/token';
+import type { Token } from '@/types/token';
 import React from 'react';
-import { config } from '@config/env';
+import { config } from '@/config/env';
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -35,7 +35,7 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ tokens, value, onChange, labe
   const selectedToken = tokens.find(token => token.currency === value);
 
   return (
-    <div className="w-full sm:w-[240px]">
+    <div className="w-[240px]">
       <label className="block text-sm font-bold text-blue-700 mb-2">{label}</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -43,16 +43,16 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ tokens, value, onChange, labe
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-full h-14 text-lg justify-between"
+            className="w-[240px] h-14 text-lg justify-between"
           >
             {selectedToken ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <img
                   src={getTokenIcon(selectedToken.currency)}
                   alt={selectedToken.currency}
                   className="w-6 h-6 rounded-full"
                 />
-                <span>{selectedToken.currency}</span>
+                <span className="truncate overflow-hidden text-ellipsis block">{selectedToken.currency}</span>
               </div>
             ) : (
               <span>Select currency</span>

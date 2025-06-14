@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import type { Token } from '../types/token';
-import { useSwapStore } from '../store/useSwapStore';
-import { axiosInstance } from '../services/axios';
+import type { Token } from '@/types/token';
+import { useSwapStore } from '@/store/useSwapStore';
+import { axiosInstance } from '@/services/axios';
 
 export const useFetchPrices = () => {
   const { setTokens, setError } = useSwapStore();
