@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { CurrencySwapForm } from '../components/CurrencySwapForm';
-import { useSwapStore } from '../store/useSwapStore';
+import { CurrencySwapForm } from '@/components/CurrencySwapForm';
+import { useSwapStore } from '@/store/useSwapStore';
 
 // Mock the store
-jest.mock('../store/useSwapStore');
+jest.mock('@/store/useSwapStore');
 
 describe('CurrencySwapForm', () => {
   const mockTokens = [

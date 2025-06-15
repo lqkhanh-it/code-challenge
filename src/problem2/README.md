@@ -1,54 +1,127 @@
-# React + TypeScript + Vite
+# Currency Swap Form
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application for currency swapping with a beautiful UI and robust functionality.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Core Technologies
+- **React 19** - Latest version of React for building user interfaces
+- **TypeScript** - For type-safe code and better developer experience
+- **Vite** - Next-generation frontend tooling for fast development
+- **TailwindCSS** - Utility-first CSS framework for rapid UI development
 
-## Expanding the ESLint configuration
+### State Management & Data Fetching
+- **Zustand** - Lightweight state management
+- **Axios** - Promise-based HTTP client
+- **React Hook Form** - Form handling with validation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### UI Components & Styling
+- **Radix UI** - Unstyled, accessible components
+- **Lucide React** - Beautiful icons
+- **Sonner** - Toast notifications
+- **Tailwind Merge** - Utility for merging Tailwind classes
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Testing
+- **Jest** - Testing framework
+- **React Testing Library** - Testing utilities for React
+- **Axios Mock Adapter** - Mocking HTTP requests in tests
+
+## Why This Tech Stack?
+
+1. **React 19 + TypeScript**: Provides a robust foundation with type safety and modern React features
+2. **Vite**: Offers extremely fast development server and build times
+3. **TailwindCSS**: Enables rapid UI development with utility classes
+4. **Zustand**: Simple and efficient state management without boilerplate
+5. **React Hook Form**: Efficient form handling with built-in validation
+6. **Jest + React Testing Library**: Industry-standard testing tools
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd currency-swap-form
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
+```bash
+yarn install
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
+Edit the `.env` file with your configuration.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Configuration
+
+### Mock Server Setup
+
+The project includes a mock server for development and testing. The mock server is configured in the `src/mocks` directory.
+
+To use the mock server:
+1. Ensure you have the correct environment variables set in `.env`
+2. The mock server will automatically intercept API calls in development mode
+
+## Project Structure
+
+```
+src/
+├── assets/         # Static assets (images, fonts, etc.)
+├── components/     # Reusable UI components
+├── config/         # Configuration files
+├── hooks/          # Custom React hooks
+├── mocks/          # Mock server and test data
+├── pages/          # Page components
+├── services/       # API services and data fetching
+├── store/          # Zustand store and state management
+├── types/          # TypeScript type definitions
+├── utils/          # Utility functions
+└── __tests__/      # Test files
+```
+
+## Development
+
+To start the development server:
+```bash
+yarn dev
+```
+
+The application will be available at `http://localhost:5173`
+
+## Building for Production
+
+To create a production build:
+```bash
+yarn build
+```
+
+To preview the production build:
+```bash
+yarn preview
+```
+
+## Testing
+
+Run tests:
+```bash
+yarn test
+```
+
+Run tests in watch mode:
+```bash
+yarn test:watch
+```
+
+Generate test coverage report:
+```bash
+yarn test:coverage
+```
+
+## Code Quality
+
+The project uses ESLint for code linting:
+```bash
+yarn lint
 ```
