@@ -1,19 +1,12 @@
 import * as React from "react"
 import { Theme } from "@radix-ui/themes"
 import "@radix-ui/themes/styles.css"
+import ThemeContext from "./ThemeContext"
 
 interface ThemeProviderProps {
   children: React.ReactNode
   defaultTheme?: "light" | "dark"
 }
-
-const ThemeContext = React.createContext<{
-  theme: "light" | "dark";
-  setTheme: (theme: "light" | "dark") => void;
-}>({
-  theme: "dark",
-  setTheme: () => {},
-});
 
 export function ThemeProvider({
   children,
@@ -41,11 +34,3 @@ export function ThemeProvider({
     </ThemeContext.Provider>
   )
 }
-
-export function useTheme() {
-  const context = React.useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
-} 
