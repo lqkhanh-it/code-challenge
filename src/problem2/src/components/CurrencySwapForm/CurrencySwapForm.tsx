@@ -52,22 +52,16 @@ const CurrencySwapForm: React.FC<CurrencySwapFormProps> = ({ onSwapSuccess }) =>
   }, [watchedAmount, watchedFromCurrency, watchedToCurrency, tokens, setValue]);
 
   useEffect(() => {
-    if (watchedAmount && watchedFromCurrency && watchedToCurrency) {
-      const validationErrors = validateForm({
-        fromAmount: watchedAmount,
-        fromCurrency: watchedFromCurrency,
-        toCurrency: watchedToCurrency,
-      });
+    const validationErrors = validateForm({
+      fromAmount: watchedAmount,
+      fromCurrency: watchedFromCurrency,
+      toCurrency: watchedToCurrency,
+    });
 
-      if (Object.keys(validationErrors).length < 0) {
-        methods.setError('fromAmount', { message: undefined });
-        methods.setError('toCurrency', { message: undefined });
-        methods.setError('fromCurrency', { message: undefined });
-      }
+    if (Object.keys(validationErrors).length === 0) {
+      methods.clearErrors();
     }
   }, [methods, watchedAmount, watchedFromCurrency, watchedToCurrency]);
-
-
 
   const onSubmit = async (data: FormData) => {
     const validationErrors = validateForm(data);

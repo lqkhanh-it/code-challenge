@@ -11,8 +11,7 @@ interface AmountInputProps {
   register: UseFormRegister<FormData>;
 }
 
-const AmountInput = React.forwardRef<HTMLInputElement, AmountInputProps>(
-  ({ name, label, placeholder, register }) => {
+const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, register }) => {
     const { watch } = useFormContext();
     if (name === 'toAmount') {
       const value = watch(name);
@@ -47,6 +46,6 @@ const AmountInput = React.forwardRef<HTMLInputElement, AmountInputProps>(
       </Flex>
     );
   }
-);
+;
 
 export default AmountInput;
