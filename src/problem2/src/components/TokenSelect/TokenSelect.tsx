@@ -30,14 +30,14 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ value, onChange, label }) => 
   const selectedToken = tokens.find(token => token.currency === value);
 
   return (
-    <Flex direction="column" gap="2" className="w-full">
+    <Flex direction="column" gap="2" className="w-full sm:w-[380px]">
       <Text as="label" size="3" weight="medium" className='font-bold text-blue-700'>
         {label}
       </Text>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-          size={"3"}
+            size="4"
             variant="outline"
             role="combobox"
             aria-expanded={open}

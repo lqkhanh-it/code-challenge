@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 
 const SubmitButton: React.FC<{ disabled: boolean; isLoading: boolean }> = ({ disabled, isLoading }) => (
   <Button
-    size="3"
+    size="4"
     type="submit"
     disabled={disabled}
     variant={disabled ? "soft" : "solid"}

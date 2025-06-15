@@ -106,12 +106,14 @@ const CurrencySwapForm = () => {
             />
           </Flex>
 
-          <ErrorMessage message={error || ''} />
+          <Flex direction="column" gap="1" className="pt-4">
+            <ErrorMessage message={error || ''} />
 
-          <SubmitButton
-            disabled={isLoading || !watchedFromCurrency || !watchedToCurrency || !watchedAmount}
-            isLoading={isLoading}
-          />
+            <SubmitButton
+              disabled={isLoading || !watchedFromCurrency || !watchedToCurrency || !watchedAmount}
+              isLoading={isLoading}
+            />
+          </Flex>
         </Flex>
       </form>
     </FormProvider>
