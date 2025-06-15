@@ -37,7 +37,7 @@ const CurrencySwapForm: React.FC<CurrencySwapFormProps> = ({ onSwapSuccess }) =>
   const toast = useAppToast();
 
   useEffect(() => {
-    if (watchedAmount && watchedFromCurrency && watchedToCurrency) {
+    if (watchedFromCurrency && watchedToCurrency) {
       const rate = getRate({
         fromCurrency: watchedFromCurrency,
         toCurrency: watchedToCurrency,
@@ -69,6 +69,7 @@ const CurrencySwapForm: React.FC<CurrencySwapFormProps> = ({ onSwapSuccess }) =>
       Object.entries(validationErrors).forEach(([field, message]) => {
         methods.setError(field as keyof FormData, { message });
       });
+      toast.error(validationErrors.fromAmount || validationErrors.toCurrency || validationErrors.fromCurrency || validationErrors.toAmount);
       return;
     }
 
@@ -111,7 +112,9 @@ const CurrencySwapForm: React.FC<CurrencySwapFormProps> = ({ onSwapSuccess }) =>
               label="You pay"
               placeholder="0.0"
               register={register}
+              error={!!errors.fromAmount?.message}
             />
+
           </Flex>
           <Addition />
           <Flex direction={{ initial: "column", sm: "row" }} align="end" gap="4">
@@ -127,11 +130,18 @@ const CurrencySwapForm: React.FC<CurrencySwapFormProps> = ({ onSwapSuccess }) =>
               register={register}
             />
           </Flex>
-          {errors.toCurrency && (
-            <Text size="1" color="red" className="mt-1">
-              {errors.toCurrency.message}
-            </Text>
-          )}
+          <Flex direction="column" gap="1" className="mt-2">
+            {errors.toCurrency && (
+              <Text size="1" color="red">
+                {errors.toCurrency.message}
+              </Text>
+            )}
+            {errors.fromAmount && (
+              <Text size="1" color="red">
+                {errors.fromAmount.message}
+              </Text>
+            )}
+          </Flex>
           <Flex direction="column" gap="1" className="pt-4">
             <ErrorMessage message={error || ''} />
             <SubmitButton

@@ -70,7 +70,7 @@ mock.onPost("/swap").reply((config) => {
       transactionId: `tx_${Math.random().toString(36).substring(7)}`,
       timestamp: new Date().toISOString(),
       fromAmount: data.amount,
-      fee: 1,
+      fee: 0,
       rate: 1,
       toAmount: calculateSwapAmount(
         data.amount,

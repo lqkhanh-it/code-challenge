@@ -3,15 +3,17 @@ import { Text, Flex } from "@radix-ui/themes";
 import { useFormContext, type UseFormRegister } from 'react-hook-form';
 import type { FormData } from '@/types';
 import { formatNumber } from '@/utils/format';
+import { cn } from '@/utils/class';
 
 interface AmountInputProps {
   name: keyof FormData;
   label: string;
   placeholder?: string;
   register: UseFormRegister<FormData>;
+  error?: boolean;
 }
 
-const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, register }) => {
+const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, register, error }) => {
     const { watch } = useFormContext();
     if (name === 'toAmount') {
       const value = watch(name);
@@ -37,7 +39,10 @@ const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, reg
           type="number"
           autoFocus
           step="any"
-          className="w-full h-12 rounded-lg px-4 py-2 font-medium outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className={cn(
+            "w-full h-12 rounded-lg px-4 py-2 font-medium outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            error && "border-2 border-red-500"
+          )}
           style={{
             backgroundColor: 'var(--color-muted)',
             color: 'var(--color-muted-foreground)'

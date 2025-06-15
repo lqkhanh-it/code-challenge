@@ -1,8 +1,8 @@
-import type { Token, SwapState } from '@/types/token';
+import type { Token } from '@/types/token';
 
 interface RateCalculationParams {
-  fromCurrency: SwapState['fromCurrency'];
-  toCurrency: SwapState['toCurrency'];
+  fromCurrency: string;
+  toCurrency: string;
   tokens: Token[];
 }
 
@@ -15,9 +15,9 @@ export const getRate = ({
   
   const fromToken = tokens.find(token => token.currency === fromCurrency);
   const toToken = tokens.find(token => token.currency === toCurrency);
-  
+
   if (!fromToken || !toToken) return null;
   
-  const rate = toToken.price / fromToken.price;
+  const rate = fromToken.price / toToken.price;
   return rate.toFixed(6);
 }; 

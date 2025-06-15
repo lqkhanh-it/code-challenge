@@ -24,8 +24,12 @@ export const validateForm = (data: Omit<FormData, 'toAmount'>) => {
     const amount = parseFloat(data.fromAmount);
     if (isNaN(amount)) {
       errors.fromAmount = 'Please enter a valid number';
-    } else if (amount <= 0) {
+    } else if (amount < 0) {
+      errors.fromAmount = 'Amount cannot be negative';
+    } else if (amount === 0) {
       errors.fromAmount = 'Amount must be greater than 0';
+    } else if (amount < 0.000001) {
+      errors.fromAmount = 'Amount is too small. Minimum amount is 0.000001';
     }
   }
 

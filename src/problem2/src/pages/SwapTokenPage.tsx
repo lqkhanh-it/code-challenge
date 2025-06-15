@@ -4,7 +4,8 @@ import Header from "@/components/Header/Header";
 import Invoice from "@/components/Invoice/Invoice";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Flex, Box, Button } from "@radix-ui/themes";
+import { Flex, Box, Button, Text } from "@radix-ui/themes";
+import { ArrowLeft } from 'lucide-react';
 import type { SwapResponse } from '@/types';
 import { useFetchPrices } from '@/hooks/useFetchPrices';
 
@@ -53,10 +54,13 @@ const SwapTokenPage = () => {
               <Invoice {...swapResponse} />
               <Button 
                 onClick={handleNewSwap}
-                size="3" 
-                className="w-full"
+                size="4"
+                className="w-full group !cursor-pointer transition-all duration-200 hover:scale-[1.02]"
               >
-                New Swap
+                <Flex align="center" justify="center" gap="2">
+                  <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <Text>New Swap</Text>
+                </Flex>
               </Button>
             </Flex>
           ) : (

@@ -13,8 +13,9 @@ const SubmitButton: React.FC<{ disabled: boolean; isLoading: boolean }> = ({ dis
       mt-6 
       transition-all 
       duration-200 
-      hover:scale-[1.02] 
-      active:scale-[0.98]
+      group 
+      hover:scale-[1.02]
+      ${!disabled && '!cursor-pointer'}
     `}
   >
     {isLoading ? (
@@ -24,7 +25,7 @@ const SubmitButton: React.FC<{ disabled: boolean; isLoading: boolean }> = ({ dis
       </Flex>
     ) : (
       <Flex align="center" justify="center" gap="2">
-        <ArrowRightLeft className="h-5 w-5" />
+        <ArrowRightLeft className={`h-5 w-5 transition-transform duration-200 ${!disabled && 'group-hover:translate-x-1'}`} />
         <Text className="font-medium">Swap Tokens</Text>
       </Flex>
     )}
