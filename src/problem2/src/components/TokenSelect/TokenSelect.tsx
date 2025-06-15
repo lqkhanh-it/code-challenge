@@ -42,6 +42,7 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ value, onChange, label }) => 
             role="combobox"
             aria-expanded={open}
             className="w-full text-lg justify-between"
+            autoFocus
           >
             {selectedToken ? (
               <Flex gap={"2"} className="items-center min-w-0">

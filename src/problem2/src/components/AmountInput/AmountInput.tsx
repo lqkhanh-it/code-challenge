@@ -36,8 +36,9 @@ const AmountInput = React.forwardRef<HTMLInputElement, AmountInputProps>(
           {...register(name)}
           placeholder={placeholder}
           type="number"
+          autoFocus
           step="any"
-          className="w-full h-12 rounded-lg px-4 py-2 font-medium border border-border outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="w-full h-12 rounded-lg px-4 py-2 font-medium outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           style={{
             backgroundColor: 'var(--color-muted)',
             color: 'var(--color-muted-foreground)'

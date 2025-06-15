@@ -12,6 +12,8 @@ import { useAppToast } from '@/hooks/useAppToast';
 import { Flex } from "@radix-ui/themes";
 import type { FormData } from '@/types';
 import Addition from '../Addition/Addition';
+import Invoice from '@/components/Invoice/Invoice';
+import { getRate } from '@/utils/rate';
 
 const CurrencySwapForm = () => {
   const { tokens, isLoading, error, setLoading, setError } = useSwapStore();
@@ -31,6 +33,7 @@ const CurrencySwapForm = () => {
   const watchedAmount = watch('fromAmount');
   const watchedFromCurrency = watch('fromCurrency');
   const watchedToCurrency = watch('toCurrency');
+  const watchedToAmount = watch('toAmount');
 
   useEffect(() => {
     if (watchedFromCurrency && watchedToCurrency && watchedAmount) {
@@ -40,6 +43,12 @@ const CurrencySwapForm = () => {
       setValue('toAmount', '');
     }
   }, [watchedAmount, watchedFromCurrency, watchedToCurrency, tokens, setValue]);
+
+  const rate = getRate({
+    fromCurrency: watchedFromCurrency,
+    toCurrency: watchedToCurrency,
+    tokens
+  });
 
   const onSubmit = async (data: FormData) => {
     if (data.fromCurrency === data.toCurrency) {
@@ -105,6 +114,16 @@ const CurrencySwapForm = () => {
               register={register}
             />
           </Flex>
+
+          {watchedAmount && watchedFromCurrency && watchedToCurrency && (
+            <Invoice
+              fromAmount={watchedAmount}
+              toAmount={watchedToAmount || '0'}
+              fromCurrency={watchedFromCurrency}
+              toCurrency={watchedToCurrency}
+              rate={rate || '0'}
+            />
+          )}
 
           <Flex direction="column" gap="1" className="pt-4">
             <ErrorMessage message={error || ''} />
