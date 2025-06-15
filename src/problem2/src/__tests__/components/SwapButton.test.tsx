@@ -1,23 +1,24 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react/pure';
 import SwapButton from '@/components/SwapButton/SwapButton';
 import { useAppToast } from '@/hooks/useAppToast';
 import { useTheme } from '@/hooks/useTheme';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock the hooks
-jest.mock('@/hooks/useAppToast');
-jest.mock('@/hooks/useTheme');
+vi.mock('@/hooks/useAppToast');
+vi.mock('@/hooks/useTheme');
 
 describe('SwapButton', () => {
-  const mockOnClick = jest.fn();
+  const mockOnClick = vi.fn();
   const mockToast = {
-    info: jest.fn(),
+    info: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (useAppToast as jest.Mock).mockReturnValue(mockToast);
-    (useTheme as jest.Mock).mockReturnValue({ theme: 'light' });
+    vi.clearAllMocks();
+    (useAppToast as unknown as ReturnType<typeof vi.fn>).mockReturnValue(mockToast);
+    (useTheme as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ theme: 'light' });
   });
 
   it('renders button with correct title', () => {
@@ -69,7 +70,7 @@ describe('SwapButton', () => {
   });
 
   it('applies dark theme styles when theme is dark', () => {
-    (useTheme as jest.Mock).mockReturnValue({ theme: 'dark' });
+    (useTheme as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ theme: 'dark' });
     
     render(<SwapButton onClick={mockOnClick} />);
     

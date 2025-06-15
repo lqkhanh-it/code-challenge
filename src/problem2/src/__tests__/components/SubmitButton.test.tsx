@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react/pure';
 import SubmitButton from '@/components/SubmitButton/SubmitButton';
+import { describe, it, expect } from 'vitest';
 
 describe('SubmitButton', () => {
   it('renders button with "Swap Tokens" text when not loading', () => {

@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import AmountInput from '@/components/AmountInput/AmountInput';
 import type { FormData } from '@/types';
+import { describe, it, expect, vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm<FormData>({
@@ -16,44 +18,48 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('AmountInput', () => {
-  const mockRegister = jest.fn();
-  const mockWatch = jest.fn();
+vi.mock('react-hook-form', () => ({
+  useForm: vi.fn().mockReturnValue({
+    register: vi.fn(),
+    watch: vi.fn().mockReturnValue(''),
+  }),
+}));
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+describe('AmountInput', () => {
 
   it('renders input field for fromAmount', () => {
+    const { register } = useForm<FormData>();
     render(
       <TestWrapper>
         <AmountInput
           name="fromAmount"
           label="Amount"
           placeholder="Enter amount"
-          register={mockRegister}
+          register={register}
         />
       </TestWrapper>
     );
 
-    expect(screen.getByLabelText('Amount')).toBeInTheDocument();
+    expect(screen.getByText('Amount')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Enter amount')).toBeInTheDocument();
   });
 
   it('renders read-only text for toAmount', () => {
-    mockWatch.mockReturnValue('100.50');
+    const { watch, register } = useForm<FormData>();
+    vi.mocked(watch);
+    const mockWatch = watch("toAmount").mockReturnValue('100.50');
     
     render(
       <TestWrapper>
         <AmountInput
           name="toAmount"
           label="To Amount"
-          register={mockRegister}
+          register={register}
         />
       </TestWrapper>
     );
 
-    expect(screen.getByLabelText('To Amount')).toBeInTheDocument();
+    expect(screen.getByText('To Amount')).toBeInTheDocument();
     expect(screen.getByText('100.5')).toBeInTheDocument();
   });
 

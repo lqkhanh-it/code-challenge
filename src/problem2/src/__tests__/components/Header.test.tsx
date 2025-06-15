@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react/pure';
 import Header from '@/components/Header/Header';
+import { describe, it, expect } from 'vitest';
 
 describe('Header', () => {
   it('renders the main title', () => {
@@ -16,10 +17,10 @@ describe('Header', () => {
   });
 
   it('applies correct styling classes to the container', () => {
-    render(<Header />);
+    const { container } = render(<Header />);
+    const headerContainer = container.firstChild as HTMLElement;
     
-    const container = screen.getByText('Token Swap').parentElement?.parentElement;
-    expect(container).toHaveClass('mb-2', 'py-4', 'px-4', 'rounded-xl');
+    expect(headerContainer).toHaveClass('mb-2', 'py-4', 'px-4', 'rounded-xl');
   });
 
   it('applies gradient text styling to the title', () => {

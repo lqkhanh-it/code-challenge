@@ -1,10 +1,15 @@
-import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TokenSelect from '@/components/TokenSelect/TokenSelect';
 import { useSwapStore } from '@/store/useSwapStore';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { getTokenIcon } from '@/utils/convert';
+import '../setup';
 
-// Mock the store
-jest.mock('@/store/useSwapStore');
+// Mock the store and getTokenIcon
+vi.mock('@/store/useSwapStore');
+vi.mock('@/utils/convert', () => ({
+  getTokenIcon: vi.fn((currency) => `mocked-icon-${currency}.svg`)
+}));
 
 describe('TokenSelect', () => {
   const mockTokens = [
@@ -13,13 +18,13 @@ describe('TokenSelect', () => {
     { currency: 'GBP', date: '2024-03-13', price: 0.75 },
   ];
 
-  const mockOnChange = jest.fn();
+  const mockOnChange = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (useSwapStore as unknown as jest.Mock).mockImplementation(() => ({
+    vi.clearAllMocks();
+    (useSwapStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: mockTokens,
-    }));
+    });
   });
 
   it('renders with label and placeholder', () => {
@@ -89,7 +94,14 @@ describe('TokenSelect', () => {
     const button = screen.getByRole('combobox');
     fireEvent.click(button);
 
-    const currencyIcons = screen.getAllByRole('img', { name: /USD|EUR|GBP/i });
-    expect(currencyIcons).toHaveLength(3);
+    // Verify that getTokenIcon was called for each currency
+    expect(getTokenIcon).toHaveBeenCalledWith('USD');
+    expect(getTokenIcon).toHaveBeenCalledWith('EUR');
+    expect(getTokenIcon).toHaveBeenCalledWith('GBP');
+
+    // Verify that img elements are present with correct alt text
+    expect(screen.getByAltText('USD')).toBeInTheDocument();
+    expect(screen.getByAltText('EUR')).toBeInTheDocument();
+    expect(screen.getByAltText('GBP')).toBeInTheDocument();
   });
 }); 
