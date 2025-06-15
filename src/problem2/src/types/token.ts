@@ -12,6 +12,9 @@ export interface SwapState {
   toAmount: string;
   isLoading: boolean;
   error: string | null;
+}
+
+export interface SwapActions {
   setTokens: (tokens: Token[]) => void;
   setFromCurrency: (currency: string) => void;
   setToCurrency: (currency: string) => void;
@@ -20,4 +23,6 @@ export interface SwapState {
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   swapCurrencies: () => void;
-} 
+}
+
+export interface SwapStore extends SwapState, SwapActions {}

@@ -1,4 +1,5 @@
-import type { Token } from '../types/token';
+import { config } from '@/config/env';
+import type { Token } from '@/types/token';
 
 export const convertCurrency = (
   amount: string,
@@ -21,3 +22,7 @@ export const convertCurrency = (
   const result = (parseFloat(amount) * fromPrice) / toPrice;
   return result.toFixed(6);
 }; 
+
+export const getTokenIcon = (currency: string) => {
+  return `${config.tokenIconsBaseUrl}/${currency}.svg`;
+};

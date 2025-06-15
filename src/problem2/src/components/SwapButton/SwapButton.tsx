@@ -19,8 +19,10 @@ const SwapButton: React.FC<SwapButtonProps> = ({ onClick }) => {
     <Button
       variant="ghost"
       color="gray"
+      size="3"
+      type='button'
       onClick={handleClick}
-      className="mx-auto my-2"
+      className="mx-auto mt-[10px] hover:!bg-transparent"
     >
       <ArrowDownUp className="h-4 w-4" />
     </Button>

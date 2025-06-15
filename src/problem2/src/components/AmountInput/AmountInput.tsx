@@ -1,40 +1,32 @@
 import React from 'react';
-import { TextField, Text } from "@radix-ui/themes";
-import { useFormContext } from 'react-hook-form';
+import { Text, Flex } from "@radix-ui/themes";
+import { type UseFormRegister } from 'react-hook-form';
+import type { FormData } from '@/types';
 
 interface AmountInputProps {
-  name: string;
+  name: keyof FormData;
   label: string;
   placeholder?: string;
-  error?: string;
+  register: UseFormRegister<FormData>;
 }
 
-const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, error }) => {
-  const { register } = useFormContext();
-
-  return (
-    <div className="space-y-2">
-      <Text as="label" size="2" weight="medium">
-        {label}
-      </Text>
-      <TextField.Root>
-        <TextField.Slot>
-          <input
-            {...register(name)}
-            placeholder={placeholder}
-            type="number"
-            step="any"
-            className="w-full"
-          />
-        </TextField.Slot>
-      </TextField.Root>
-      {error && (
-        <Text color="red" size="1">
-          {error}
-        </Text>
-      )}
-    </div>
-  );
-};
+const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, register }) => (
+  <Flex direction="column" gap="2" className="w-full">
+    <Text as="label" size="3" weight="medium" className='font-bold text-blue-700'>
+      {label}
+    </Text>
+    <input
+      {...register(name)}
+      placeholder={placeholder}
+      type="number"
+      step="any"
+      className="w-full rounded-lg px-4 py-2 font-medium border border-border outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      style={{
+        backgroundColor: 'var(--color-muted)',
+        color: 'var(--color-muted-foreground)'
+      }}
+    />
+  </Flex>
+);
 
 export default AmountInput;

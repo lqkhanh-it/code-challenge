@@ -12,3 +12,10 @@ export interface SwapQuote {
   fee: number;
   timestamp: string;
 }
+
+export interface FormData {
+  fromAmount: string;
+  fromCurrency: string;
+  toCurrency: string;
+  toAmount: string;
+}

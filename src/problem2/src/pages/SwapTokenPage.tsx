@@ -2,26 +2,40 @@ import CurrencySwapForm from "@/components/CurrencySwapForm";
 import Header from "@/components/Header/Header";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { Flex, Box } from "@radix-ui/themes";
 
 const SwapTokenPage = () => {
   return (
     <ThemeProvider defaultTheme="dark">
-      <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <Flex 
+        direction="column" 
+        align="center" 
+        className="min-h-screen"
+        style={{
+          background: 'linear-gradient(135deg, var(--color-background), var(--color-card))'
+        }}
+      >
         {/* Header */}
-        <div className="mt-10 w-full flex flex-col items-center">
+        <Flex direction="column" align="center" className="mt-10 w-full">
           <Header />
-        </div>
+        </Flex>
 
         {/* Theme Toggle */}
-        <div className="absolute top-4 right-4">
+        <Box className="absolute top-4 right-4">
           <ThemeToggle />
-        </div>
+        </Box>
 
         {/* Swap Card */}
-        <div className="w-full max-w-2xl p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+        <Box 
+          className="w-full max-w-2xl p-8 rounded-2xl shadow-xl"
+          style={{
+            backgroundColor: 'var(--color-card)',
+            border: '1px solid var(--color-border)'
+          }}
+        >
           <CurrencySwapForm />
-        </div>
-      </div>
+        </Box>
+      </Flex>
     </ThemeProvider>
   );
 };
