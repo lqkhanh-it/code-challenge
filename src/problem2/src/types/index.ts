@@ -1,9 +1,6 @@
-export interface CurrencyPair {
-  from: string;
-  to: string;
-}
-
-export interface SwapQuote {
+export interface SwapResponse {
+  success: boolean;
+  transactionId: string;
   fromCurrency: string;
   toCurrency: string;
   fromAmount: number;

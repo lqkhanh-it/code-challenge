@@ -1,13 +1,6 @@
-import type { Token } from '../types/token';
+import type { SwapResponse } from '@/types';
+import type { Token } from '@/types/token';
 import { axiosInstance } from './axios';
-
-interface SwapResponse {
-  success: boolean;
-  transactionId: string;
-  timestamp: string;
-  fromAmount: number;
-  toAmount: number;
-}
 
 export const currencyApi = {
   // Get token prices

@@ -3,14 +3,9 @@ import { Box, Flex, Text } from "@radix-ui/themes";
 import { formatNumber } from '@/utils/format';
 import { CheckCircle } from 'lucide-react';
 import { getTokenIcon } from '@/utils/convert';
-
-interface InvoiceProps {
-  fromAmount: string;
-  toAmount: string;
-  fromCurrency: string;
-  toCurrency: string;
-  rate: string;
-}
+import { getRate } from '@/utils/rate';
+import { useSwapStore } from '@/store/useSwapStore';
+import type { SwapResponse } from '@/types';
 
 const TokenIcon = ({ currency }: { currency: string }) => (
   <div className="w-5 h-5 relative">
@@ -24,13 +19,20 @@ const TokenIcon = ({ currency }: { currency: string }) => (
   </div>
 );
 
-const Invoice: React.FC<InvoiceProps> = ({
+const Invoice: React.FC<SwapResponse> = ({
   fromAmount,
   toAmount,
   fromCurrency,
   toCurrency,
-  rate
 }) => {
+  const { tokens } = useSwapStore();
+  
+  const rate = getRate({
+    fromCurrency,
+    toCurrency,
+    tokens
+  });
+  
   return (
     <Box className="w-full rounded-lg border border-border p-4 my-4">
       <Flex align="center" gap="2" className="mb-4">
