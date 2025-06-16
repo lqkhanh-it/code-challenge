@@ -2,43 +2,13 @@ import MockAdapter from "axios-mock-adapter";
 import { axiosInstance } from "@/services/axios";
 import type { Token } from "@/types/token";
 import type { SwapResponse } from "@/types";
+import { mockPrices } from "./price";
 
 // Create mock adapter instance
 const mock = new MockAdapter(axiosInstance, { delayResponse: 1000 });
 
 // Mock token prices data
-const mockTokens: Token[] = [
-  {
-    currency: "ETH",
-    date: new Date().toISOString(),
-    price: 2000.0,
-  },
-  {
-    currency: "BTC",
-    date: new Date().toISOString(),
-    price: 40000.0,
-  },
-  {
-    currency: "USDT",
-    date: new Date().toISOString(),
-    price: 1.0,
-  },
-  {
-    currency: "USDC",
-    date: new Date().toISOString(),
-    price: 1.0,
-  },
-  {
-    currency: "SOL",
-    date: new Date().toISOString(),
-    price: 100.0,
-  },
-  {
-    currency: "AVAX",
-    date: new Date().toISOString(),
-    price: 35.0,
-  },
-];
+const mockTokens: Token[] = mockPrices;
 
 // Mock GET /prices.json endpoint
 mock.onGet("/prices.json").reply(200, mockTokens);
