@@ -129,3 +129,12 @@ The project uses ESLint for code linting:
 ```bash
 yarn lint
 ```
+
+## Build container
+```bash
+# Build the production container
+docker build -t currency-swap-form-prod -f Dockerfile .
+
+# Run the production container
+docker run -p 80:80 currency-swap-form-prod
+```
