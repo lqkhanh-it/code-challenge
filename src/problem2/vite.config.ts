@@ -13,6 +13,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src")
     },
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    sourcemap: true,
+    rollupOptions: {
+      external: ['./src/__tests__/**'],
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom',

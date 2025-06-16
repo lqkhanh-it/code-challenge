@@ -1,19 +1,46 @@
 # Currency Swap Form
 
-A modern React application for currency swapping with a beautiful UI and robust functionality.
+## Project Overview - VERY IMPORTANT
+
+### This project demonstrates a comprehensive implementation of a currency swap form, intentionally designed with scalability and maintainability in mind. 
+
+### While a simpler implementation could have sufficed, this version showcases advanced architectural patterns and best practices to highlight the importance of proper project structure and maintainable code.
+
+### 📊 Test Coverage
+![Test Coverage](images/coverage.png)
+
+### 🖼️ Project Screenshot
+![Currency Swap Form](images/project.png)
+
+## Project Structure
+
+```
+src/
+├── assets/         # Static assets (images, fonts, etc.)
+├── components/     # Reusable UI components
+├── config/         # Configuration files
+├── hooks/          # Custom React hooks
+├── mocks/          # Mock server and test data
+├── pages/          # Page components
+├── services/       # API services and data fetching
+├── store/          # Zustand store and state management
+├── types/          # TypeScript type definitions
+├── utils/          # Utility functions
+└── __tests__/      # Test files
+```
 
 ## Tech Stack
 
 ### Core Technologies
-- **React 19** - Latest version of React for building user interfaces
+- **React 19** - Latest version of React for building user interfaces with type safety and modern features
 - **TypeScript** - For type-safe code and better developer experience
-- **Vite** - Next-generation frontend tooling for fast development
-- **TailwindCSS** - Utility-first CSS framework for rapid UI development
+- **Vite** - Next-generation frontend tooling offering extremely fast development server and build times
+- **TailwindCSS** - Utility-first CSS framework enabling rapid UI development with utility classes
 
 ### State Management & Data Fetching
-- **Zustand** - Lightweight state management
+- **Zustand** - Lightweight state management without boilerplate
 - **Axios** - Promise-based HTTP client
-- **React Hook Form** - Form handling with validation
+- **React Hook Form** - Efficient form handling with built-in validation
 
 ### UI Components & Styling
 - **Radix UI** - Unstyled, accessible components
@@ -25,15 +52,7 @@ A modern React application for currency swapping with a beautiful UI and robust 
 - **Jest** - Testing framework
 - **React Testing Library** - Testing utilities for React
 - **Axios Mock Adapter** - Mocking HTTP requests in tests
-
-## Why This Tech Stack?
-
-1. **React 19 + TypeScript**: Provides a robust foundation with type safety and modern React features
-2. **Vite**: Offers extremely fast development server and build times
-3. **TailwindCSS**: Enables rapid UI development with utility classes
-4. **Zustand**: Simple and efficient state management without boilerplate
-5. **React Hook Form**: Efficient form handling with built-in validation
-6. **Jest + React Testing Library**: Industry-standard testing tools
+- **Jest Coverage** - Code coverage reporting and analysis
 
 ## Installation
 
@@ -64,23 +83,6 @@ To use the mock server:
 1. Ensure you have the correct environment variables set in `.env`
 2. The mock server will automatically intercept API calls in development mode
 
-## Project Structure
-
-```
-src/
-├── assets/         # Static assets (images, fonts, etc.)
-├── components/     # Reusable UI components
-├── config/         # Configuration files
-├── hooks/          # Custom React hooks
-├── mocks/          # Mock server and test data
-├── pages/          # Page components
-├── services/       # API services and data fetching
-├── store/          # Zustand store and state management
-├── types/          # TypeScript type definitions
-├── utils/          # Utility functions
-└── __tests__/      # Test files
-```
-
 ## Development
 
 To start the development server:
@@ -109,15 +111,17 @@ Run tests:
 yarn test
 ```
 
-Run tests in watch mode:
+Run test with coverage report:
 ```bash
-yarn test:watch
+yarn coverage
 ```
 
-Generate test coverage report:
-```bash
-yarn test:coverage
-```
+
+The coverage report will be available at `coverage/index.html` after running the coverage command. It includes:
+- Statement coverage
+- Branch coverage
+- Function coverage
+- Line coverage
 
 ## Code Quality
 
