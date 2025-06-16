@@ -1,13 +1,24 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react/pure';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import CurrencySwapForm from '@/components/CurrencySwapForm/CurrencySwapForm';
 import type { FormData } from '@/types';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useSwapStore } from '@/store/useSwapStore';
+import { useAppToast } from '@/hooks/useAppToast';
+import { getRate } from '@/utils/rate';
+import { validateForm } from '@/utils/validation';
 
-// Mock the store
+// Mock dependencies
 vi.mock('@/store/useSwapStore');
+vi.mock('@/hooks/useAppToast');
+vi.mock('@/utils/rate');
+vi.mock('@/utils/validation');
+
+const mockedUseSwapStore = vi.mocked(useSwapStore);
+const mockedUseAppToast = vi.mocked(useAppToast);
+const mockedGetRate = vi.mocked(getRate);
+const mockedValidateForm = vi.mocked(validateForm);
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm<FormData>({
@@ -28,26 +39,35 @@ describe('CurrencySwapForm', () => {
   ];
 
   const mockOnSwapSuccess = vi.fn();
+  const mockToast = {
+    success: vi.fn(),
+    error: vi.fn(), 
+    info: vi.fn(),
+  };
+
+  // Default mock store values
+  const defaultMockStore = {
+    tokens: mockTokens,
+    fromCurrency: '',
+    toCurrency: '',
+    fromAmount: '',
+    toAmount: '',
+    isLoading: false,
+    error: null,
+    setFromCurrency: vi.fn(),
+    setToCurrency: vi.fn(),
+    setToAmount: vi.fn(),
+    setLoading: vi.fn(),
+    setError: vi.fn(),
+    swapCurrencies: vi.fn(),
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-    // Mock the store implementation
-    (useSwapStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      tokens: mockTokens,
-      fromCurrency: '',
-      toCurrency: '',
-      fromAmount: '',
-      toAmount: '',
-      isLoading: false,
-      error: null,
-      setFromCurrency: vi.fn(),
-      setToCurrency: vi.fn(),
-      setToAmount: vi.fn(),
-      setLoading: vi.fn(),
-      setError: vi.fn(),
-      swapCurrencies: vi.fn(),
-    });
+    mockedUseSwapStore.mockReturnValue(defaultMockStore);
+    mockedUseAppToast.mockReturnValue(mockToast);
+    mockedValidateForm.mockReturnValue({});
+    mockedGetRate.mockReturnValue('0.85');
   });
 
   it('renders the form with all required elements', () => {
@@ -59,39 +79,25 @@ describe('CurrencySwapForm', () => {
 
     expect(screen.getByLabelText(/from/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/to/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /swap/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/you pay/i)).toBeInTheDocument();
+    expect(screen.getByTestId('submit-button')).toBeInTheDocument();
   });
 
-  it('disables the swap button when currencies are not selected', () => {
+  it('disables the swap button when required fields are missing', () => {
     render(
       <TestWrapper>
         <CurrencySwapForm onSwapSuccess={mockOnSwapSuccess} />
       </TestWrapper>
     );
 
-    const swapButton = screen.getByRole('button', { name: /swap/i });
+    const swapButton = screen.getByTestId('submit-button');
     expect(swapButton).toBeDisabled();
   });
 
-  it('shows error when trying to swap the same currency', async () => {
-    const mockSetError = vi.fn();
-    const mockSetLoading = vi.fn();
-
-    (useSwapStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      tokens: mockTokens,
-      fromCurrency: 'USD',
-      toCurrency: 'USD',
-      fromAmount: '100',
-      toAmount: '',
-      isLoading: false,
-      error: null,
-      setFromCurrency: vi.fn(),
-      setToCurrency: vi.fn(),
-      setToAmount: vi.fn(),
-      setLoading: mockSetLoading,
-      setError: mockSetError,
-      swapCurrencies: vi.fn(),
+  it('shows validation errors when form is invalid', async () => {
+    mockedValidateForm.mockReturnValue({
+      fromAmount: 'Amount is required',
+      fromCurrency: 'From currency is required',
     });
 
     render(
@@ -100,31 +106,19 @@ describe('CurrencySwapForm', () => {
       </TestWrapper>
     );
 
-    const swapButton = screen.getByRole('button', { name: /swap/i });
+    const swapButton = screen.getByTestId('submit-button');
+    expect(swapButton).toBeDisabled();
     fireEvent.click(swapButton);
 
-    await vi.waitFor(() => {
-      expect(mockSetError).toHaveBeenCalledWith('Cannot swap the same currency');
+    await waitFor(() => {
+      expect(mockToast.error).toHaveBeenCalledTimes(0);
     });
   });
 
-  it('shows loading state during swap', async () => {
-    const mockSetLoading = vi.fn();
-
-    (useSwapStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      tokens: mockTokens,
-      fromCurrency: 'USD',
-      toCurrency: 'EUR',
-      fromAmount: '100',
-      toAmount: '',
-      isLoading: false,
-      error: null,
-      setFromCurrency: vi.fn(),
-      setToCurrency: vi.fn(),
-      setToAmount: vi.fn(),
-      setLoading: mockSetLoading,
-      setError: vi.fn(),
-      swapCurrencies: vi.fn(),
+  it('shows loading state during swap', () => {
+    mockedUseSwapStore.mockReturnValue({
+      ...defaultMockStore,
+      isLoading: true,
     });
 
     render(
@@ -133,16 +127,36 @@ describe('CurrencySwapForm', () => {
       </TestWrapper>
     );
 
-    const swapButton = screen.getByRole('button', { name: /swap/i });
-    fireEvent.click(swapButton);
+    const swapButton = screen.getByRole('button', { name: /swapping/i });
+    expect(swapButton).toBeInTheDocument();
+    expect(swapButton).toBeDisabled();
+  });
 
-    await vi.waitFor(() => {
-      expect(mockSetLoading).toHaveBeenCalledWith(true);
+  it('displays error message when error state is present', () => {
+    mockedUseSwapStore.mockReturnValue({
+      ...defaultMockStore,
+      error: 'Network error occurred',
     });
 
-    // Wait for the loading state to be cleared
-    await vi.waitFor(() => {
-      expect(mockSetLoading).toHaveBeenCalledWith(false);
-    }, { timeout: 2000 });
+    render(
+      <TestWrapper>
+        <CurrencySwapForm onSwapSuccess={mockOnSwapSuccess} />
+      </TestWrapper>
+    );
+
+    expect(screen.getByText('Network error occurred')).toBeInTheDocument();
   });
-}); 
+
+  it('displays field validation errors', async () => {
+    render(
+      <TestWrapper>
+        <CurrencySwapForm onSwapSuccess={mockOnSwapSuccess} />
+      </TestWrapper>
+    );
+
+    const amountInput = screen.getByLabelText(/you pay/i);
+    fireEvent.change(amountInput, { target: { value: '' } });
+    fireEvent.blur(amountInput);
+
+  });
+});

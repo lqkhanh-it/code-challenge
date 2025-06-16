@@ -16,4 +16,7 @@ vi.stubGlobal('ResizeObserver', class {
 });
 
 // Mock scrollIntoView
-vi.stubGlobal('scrollIntoView', vi.fn()); 
+Object.defineProperty(window.Element.prototype, 'scrollIntoView', {
+  value: vi.fn(),
+  writable: true
+});

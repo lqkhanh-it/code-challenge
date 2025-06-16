@@ -29,11 +29,12 @@ const AmountInput: React.FC<AmountInputProps> = ({ name, label, placeholder, reg
 
     return (
       <Flex direction="column" gap="2" className="w-full">
-        <Text as="label" size="3" weight="medium" className='font-bold text-blue-700'>
+        <Text as="label" size="3" weight="medium" className='font-bold text-blue-700' htmlFor={name}>
           {label}
         </Text>
 
         <input
+          id={name}
           {...register(name)}
           placeholder={placeholder}
           type="number"

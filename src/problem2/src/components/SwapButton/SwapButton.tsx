@@ -19,6 +19,7 @@ const SwapButton: React.FC<SwapButtonProps> = ({ onClick }) => {
 
   return (
     <Button
+      data-testid="swap-button"
       variant="ghost"
       color="gray"
       size="3"
@@ -33,6 +34,7 @@ const SwapButton: React.FC<SwapButtonProps> = ({ onClick }) => {
       title="Swap tokens"
     >
       <ArrowDownUp 
+        data-testid="swap-icon"
         className={`
           h-4 w-4 
           transition-colors duration-200

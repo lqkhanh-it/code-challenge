@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react/pure';
+import { render, screen, within } from '@testing-library/react/pure';
 import SubmitButton from '@/components/SubmitButton/SubmitButton';
 import { describe, it, expect } from 'vitest';
 
@@ -37,14 +37,14 @@ describe('SubmitButton', () => {
   it('renders loading spinner when loading', () => {
     render(<SubmitButton disabled={false} isLoading={true} />);
     
-    const spinner = screen.getByRole('img', { name: /loader/i });
+    const spinner = screen.getByTestId('loader');
     expect(spinner).toHaveClass('animate-spin');
   });
 
   it('renders swap icon when not loading', () => {
     render(<SubmitButton disabled={false} isLoading={false} />);
     
-    const swapIcon = screen.getByRole('img', { name: /arrow/i });
+    const swapIcon = screen.getByTestId('swap-icon');
     expect(swapIcon).toHaveClass('h-5', 'w-5', 'transition-transform', 'duration-200', 'group-hover:translate-x-1');
   });
 

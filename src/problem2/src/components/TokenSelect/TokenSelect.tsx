@@ -31,7 +31,7 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ value, onChange, label }) => 
 
   return (
     <Flex direction="column" gap="2" className="w-full sm:w-[380px]">
-      <Text as="label" size="3" weight="medium" className='font-bold text-blue-700'>
+      <Text as="label" size="3" weight="medium" className='font-bold text-blue-700' htmlFor={label}>
         {label}
       </Text>
       <Popover open={open} onOpenChange={setOpen}>
@@ -40,6 +40,7 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ value, onChange, label }) => 
             size="4"
             variant="outline"
             role="combobox"
+            id={label}
             aria-expanded={open}
             className="w-full text-lg justify-between"
             autoFocus
@@ -84,6 +85,7 @@ const TokenSelect: React.FC<TokenSelectProps> = ({ value, onChange, label }) => 
                       <Text>{token.currency}</Text>
                     </Flex>
                     <Check
+                      data-testid="check-mark"
                       className={cn(
                         "ml-auto h-5 w-5",
                         value === token.currency ? "opacity-100" : "opacity-0"

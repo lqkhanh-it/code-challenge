@@ -58,7 +58,7 @@ describe('SwapButton', () => {
   it('renders swap icon with correct styling', () => {
     render(<SwapButton onClick={mockOnClick} />);
     
-    const icon = screen.getByRole('img', { name: /arrow/i });
+    const icon = screen.getByTestId('swap-icon');
     expect(icon).toHaveClass(
       'h-4',
       'w-4',
@@ -74,7 +74,7 @@ describe('SwapButton', () => {
     
     render(<SwapButton onClick={mockOnClick} />);
     
-    const icon = screen.getByRole('img', { name: /arrow/i });
+    const icon = screen.getByTestId('swap-icon');
     expect(icon).toHaveClass('text-gray-300');
   });
 

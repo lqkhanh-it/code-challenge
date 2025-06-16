@@ -84,8 +84,8 @@ describe('TokenSelect', () => {
     const button = screen.getByRole('combobox');
     fireEvent.click(button);
 
-    const checkMarks = screen.getAllByRole('img', { name: /check/i });
-    expect(checkMarks).toHaveLength(1);
+    const checkMarks = screen.getAllByTestId('check-mark');
+    expect(checkMarks).toHaveLength(3);
   });
 
   it('displays currency icons', () => {

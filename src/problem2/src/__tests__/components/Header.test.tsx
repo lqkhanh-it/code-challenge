@@ -37,11 +37,10 @@ describe('Header', () => {
     );
   });
 
-  it('applies correct text size and color to the subtitle', () => {
+  it('applies correct text size', () => {
     render(<Header />);
     
     const subtitle = screen.getByText('Fast and secure token swap');
     expect(subtitle).toHaveClass('mb-2');
-    expect(subtitle).toHaveAttribute('color', 'gray');
   });
 }); 

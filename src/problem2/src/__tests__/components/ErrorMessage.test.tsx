@@ -21,7 +21,8 @@ describe('ErrorMessage', () => {
   it('renders empty message', () => {
     render(<ErrorMessage message="" />);
     
-    expect(screen.getByText('')).toBeInTheDocument();
+    const errorElement = screen.queryByRole('span');
+    expect(errorElement).not.toBeInTheDocument();
   });
 
   it('renders with special characters', () => {
